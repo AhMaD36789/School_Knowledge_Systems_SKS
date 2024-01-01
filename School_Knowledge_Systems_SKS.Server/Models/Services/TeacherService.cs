@@ -36,6 +36,19 @@ namespace School_Knowledge_Systems.Server.Models.Services
             return (TeacherDTO)teacher;
         }
 
+        public async Task<TeacherSubjectDTO> GetTeacherWithSubjects(int teacherId)
+        {
+            var teacher = await _context.Teachers.Select(x => new TeacherSubjectDTO
+            {
+                TeacherID = teacherId,
+                PhoneNumber = x.PhoneNumber,
+                TeacherClassesPerWeek = x.TeacherClassesPerWeek,
+                TeacherName = x.TeacherName,
+                TaughtSubjects = _context.Subjects.Where(s => s.TeacherID == teacherId).ToList(),
+            }).FirstOrDefaultAsync(tid => tid.TeacherID == teacherId);
+            return teacher;
+        }
+
         public async Task<IEnumerable<TeacherDTO>> GetTeachers()
         {
             var teachersList = await _context.Teachers.ToListAsync();

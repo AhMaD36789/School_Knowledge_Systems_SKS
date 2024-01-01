@@ -57,5 +57,19 @@ namespace School_Knowledge_Systems.Server.Controllers
             var section = await _sections.DeleteSection(id);
             return section != null ? Ok(section) : NotFound();
         }
+
+        [HttpGet("ShuffleAndDistribute")]
+        public async Task<IActionResult> ShuffleAndDistribute()
+        {
+            try
+            {
+                await _sections.ShuffleStudentsAndDistribute();
+                return Ok("Students shuffled and distributed successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
     }
 }

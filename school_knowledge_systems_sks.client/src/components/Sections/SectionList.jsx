@@ -1,17 +1,19 @@
 // SectionList.jsx
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Container, Row, Col } from 'react-bootstrap';
+import { Button, Table, Container, Row, Col, Modal } from 'react-bootstrap';
 import api from '../Api/api';
 import SectionDetails from './SectionDetails';
 import SectionDelete from './SectionDelete';
 import SectionUpdate from './SectionUpdate';
 import SectionCreate from './SectionCreate';
+import ShuffleStudents from './ShuffleStudents'; // Import the new component
 
 const SectionList = () => {
     const [sections, setSections] = useState([]);
     const [selectedSection, setSelectedSection] = useState(null);
     const [action, setAction] = useState(null);
     const [error, setError] = useState(null);
+    const [showShuffleModal, setShowShuffleModal] = useState(false); // New state for ShuffleStudents modal
 
     useEffect(() => {
         fetchData();
@@ -43,10 +45,15 @@ const SectionList = () => {
     };
 
     const handleCreate = () => {
-        setSelectedSection({}); // or setSelectedSection(null) based on your preference
+        setSelectedSection({});
         setAction('create');
     };
-    
+
+    const handleShuffleSuccess = async () => {
+        await fetchData();
+        handleCloseShuffle();
+    };
+
     const handleUpdateSuccess = async (updatedSection) => {
         setSections((prevSections) =>
             prevSections.map((s) => (s.SectionID === updatedSection.SectionID ? updatedSection : s))
@@ -70,6 +77,14 @@ const SectionList = () => {
         setAction(null);
     };
 
+    const handleShuffleClick = () => {
+        setShowShuffleModal(true);
+    };
+
+    const handleCloseShuffle = () => {
+        setShowShuffleModal(false);
+    };
+
     const renderActionComponent = () => {
         switch (action) {
             case 'details':
@@ -80,7 +95,6 @@ const SectionList = () => {
                         section={selectedSection}
                         onUpdate={handleUpdateSuccess}
                         onClose={handleClose}
-                        updateSections={setSections}
                     />
                 );
             case 'delete':
@@ -107,6 +121,9 @@ const SectionList = () => {
                 <Col className="text-end">
                     <Button onClick={handleCreate} variant="primary">
                         Create New Section
+                    </Button>
+                    <Button onClick={handleShuffleClick} variant="success" className="ms-2">
+                        Shuffle and Distribute Students
                     </Button>
                 </Col>
             </Row>
@@ -144,6 +161,10 @@ const SectionList = () => {
             </Table>
 
             {selectedSection && renderActionComponent()}
+
+            {showShuffleModal && (
+                <ShuffleStudents onShuffleSuccess={handleShuffleSuccess} onClose={handleCloseShuffle} />
+            )}
         </Container>
     );
 };

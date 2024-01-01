@@ -9,5 +9,6 @@ namespace School_Knowledge_Systems.Server.Models.Interfaces
         Task<TeacherDTO> PutTeacher(int id, TeacherDTOPut teacher);
         Task<TeacherDTO> PostTeacher(TeacherDTO teacher);
         Task<TeacherDTO> DeleteTeacher(int id);
+        Task<TeacherSubjectDTO> GetTeacherWithSubjects(int teacherId);
     }
 }

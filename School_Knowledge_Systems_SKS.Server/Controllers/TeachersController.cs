@@ -32,6 +32,13 @@ namespace School_Knowledge_Systems.Server.Controllers
             return teacher != null ? Ok(teacher) : NotFound();
         }
 
+        [HttpGet("{id}/WithSubjects")]
+        public async Task<ActionResult<TeacherDTO>> GetTeacherWithSubjects(int id)
+        {
+            var teacherWithSubjects = await _Teachers.GetTeacherWithSubjects(id);
+            return teacherWithSubjects != null ? Ok(teacherWithSubjects) : NotFound();
+        }
+
         // PUT: api/Teachers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Card } from 'react-bootstrap';
 
 const LevelDetails = ({ level, onClose }) => {
     return (
@@ -8,8 +8,12 @@ const LevelDetails = ({ level, onClose }) => {
                 <Modal.Title>Level Details</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Class ID: {level.levelID}</p>
-                <p>Students: {level.studentsCount}</p>
+                <Card>
+                    <Card.Body>
+                        <Card.Title className="text-center">Class ID: {level.levelID}</Card.Title>
+                        <Card.Text className="text-center">Students: {level.studentsCount}</Card.Text>
+                    </Card.Body>
+                </Card>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>
